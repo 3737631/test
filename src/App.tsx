@@ -487,7 +487,7 @@ function Reservas() {
               <div className="conf-row"><span className="conf-label">Teléfono</span><span className="conf-value">{done.phone}</span></div>
               {done.note && <div className="conf-row"><span className="conf-label">Comentarios</span><span className="conf-value">{done.note}</span></div>}
             </div>
-            <a href={`tel:${RESTAURANT.phoneLink}`} className="btn-primary call-btn">Llamar al restaurante</a>
+            {RESTAURANT.phoneLink && <a href={`tel:${RESTAURANT.phoneLink}`} className="btn-primary call-btn">Llamar al restaurante</a>}
           </div>
         </div>
       </section>
