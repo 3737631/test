@@ -14,10 +14,11 @@
   --accent-hover: #A02020;
   --text: var(--dark);
   --text-muted: #6B7280;
-  --border: #E0D8D0;
-  --font-display: 'Prata', serif;
+  --border: #E5E0D8;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --font-display: 'Cinzel', serif;
   --font-body: 'Nunito', sans-serif;
-  --radius-card: 8px;
+  --radius-card: 10px;
   --radius-input: 6px;
   --radius-circle: 50%;
 }
