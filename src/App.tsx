@@ -151,10 +151,13 @@ function Hero() {
             <h1 className="fade-up hero-title">{RESTAURANT.name} <em>Pizza</em></h1>
             <p className="fade-up hero-subtitle">{RESTAURANT.tagline}</p>
             <div className="fade-up hero-actions">
+              <a href={`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`} className="btn-primary">Reservar mesa</a>
               <button className="btn-outline" onClick={() => document.getElementById("carta")?.scrollIntoView({ behavior: "smooth" })}>Ver carta</button>
-              <a href={`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`} className="btn-gold">Reservar mesa</a>
-              <a href={`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`} className="btn-ghost">Llamar</a>
-              <a href="https://maps.google.com/?q=Luigipizza+San+Juan+de+Aznalfarache" target="_blank" rel="noopener noreferrer" className="btn-ghost">Cómo llegar</a>
+            </div>
+            <div className="fade-up hero-links">
+              <a href={`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`} className="hero-link">Llamar</a>
+              <span className="hero-link-sep">·</span>
+              <a href="https://maps.google.com/?q=Luigipizza+San+Juan+de+Aznalfarache" target="_blank" rel="noopener noreferrer" className="hero-link">Cómo llegar</a>
             </div>
           </>
         )}
