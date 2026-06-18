@@ -132,32 +132,43 @@ function Navbar() {
 }
 
 function Hero() {
-  const [visible, setVisible] = useState(false)
+  const ref = useRef<HTMLElement>(null)
+  const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
-    setVisible(true)
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const raw = Math.min(1, Math.max(0, 1 - entry.intersectionRatio))
+        setScrollProgress(raw)
+      },
+      { threshold: Array.from({ length: 21 }, (_, i) => i / 20) }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
   }, [])
 
+  const overlayOpacity = Math.min(scrollProgress * 1.8, 0.55)
+  const contentOpacity = Math.min(Math.max((scrollProgress - 0.06) * 5, 0), 1)
+  const clipProgress = Math.max(0, (scrollProgress - 0.4) / 0.6)
+
   return (
-    <section className="hero">
+    <section className="hero" ref={ref} style={{ clipPath: `polygon(0 0, 100% 0, 100% ${100 - clipProgress * 25}%, 0 ${100 - clipProgress * 20}%)` }}>
       <div className="hero-bg">
-        <img src="https://res.cloudinary.com/dmuxgamms/image/upload/v1781792861/unnamed_3_l6wkaf.webp" alt="Pizza artesanal" />
+        <img src="https://res.cloudinary.com/dmuxgamms/image/upload/v1781792861/unnamed_3_l6wkaf.webp" alt="Pizza artesanal" style={{ transform: `translateY(${scrollProgress * 80}px)` }} />
       </div>
-      <div className="hero-overlay" />
-      <div className="hero-content">
-        {visible && (
-          <>
-            <p className="fade-up hero-eyebrow">{RESTAURANT.city}</p>
-            <h1 className="fade-up hero-title">{RESTAURANT.name} <em>Pizza</em></h1>
-            <p className="fade-up hero-subtitle">{RESTAURANT.tagline}</p>
-            <div className="fade-up hero-actions">
-              <button className="btn-outline" onClick={() => document.getElementById("carta")?.scrollIntoView({ behavior: "smooth" })}>Ver carta</button>
-              <a href={`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`} className="btn-gold">Reservar mesa</a>
-              <a href={`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`} className="btn-ghost">Llamar</a>
-              <a href="https://maps.google.com/?q=Luigipizza+San+Juan+de+Aznalfarache" target="_blank" rel="noopener noreferrer" className="btn-ghost">Cómo llegar</a>
-            </div>
-          </>
-        )}
+      <div className="hero-overlay" style={{ opacity: overlayOpacity }} />
+      <div className="hero-content" style={{ opacity: contentOpacity, transform: `translateY(${(1 - contentOpacity) * 24}px)` }}>
+        <p className="hero-eyebrow">{RESTAURANT.city}</p>
+        <h1 className="hero-title">{RESTAURANT.name} <em>Pizza</em></h1>
+        <p className="hero-subtitle">{RESTAURANT.tagline}</p>
+        <div className="hero-actions">
+          <button className="btn-outline" onClick={() => document.getElementById("carta")?.scrollIntoView({ behavior: "smooth" })}>Ver carta</button>
+          <a href={`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`} className="btn-gold">Reservar mesa</a>
+          <a href={`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`} className="btn-ghost">Llamar</a>
+          <a href="https://maps.google.com/?q=Luigipizza+San+Juan+de+Aznalfarache" target="_blank" rel="noopener noreferrer" className="btn-ghost">Cómo llegar</a>
+        </div>
       </div>
       <button className="hero-scroll" onClick={() => document.getElementById("nosotros")?.scrollIntoView({ behavior: "smooth" })}>
         <span>Descubrir</span>
