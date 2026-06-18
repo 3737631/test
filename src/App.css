@@ -113,19 +113,22 @@
 .hero {
   position: relative; height: 100vh; min-height: 600px;
   display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
+  overflow: hidden; will-change: clip-path;
 }
 .hero-bg { position: absolute; inset: 0; }
 .hero-bg img {
   width: 100%; height: 100%; object-fit: cover;
+  will-change: transform;
 }
 .hero-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.75));
+  will-change: opacity;
 }
 .hero-content {
   position: relative; z-index: 2; text-align: center;
   max-width: 800px; padding: 0 1.25rem;
+  will-change: transform, opacity;
 }
 .hero-eyebrow {
   font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase;

@@ -138,15 +138,29 @@ function Navbar() {
 
 function Hero() {
   const [visible, setVisible] = useState(false)
+  const ref = useRef<HTMLElement>(null)
+  const [scrollProgress, setScrollProgress] = useState(0)
+
   useEffect(() => { setVisible(true) }, [])
 
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setScrollProgress(Math.min(1, Math.max(0, 1 - entry.intersectionRatio))),
+      { threshold: Array.from({ length: 20 }, (_, i) => i / 20) }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <section className="hero">
+    <section className="hero" ref={ref} style={{ clipPath: `polygon(0 0, 100% 0, 100% ${100 - scrollProgress * 25}%, 0 ${100 - scrollProgress * 20}%)` }}>
       <div className="hero-bg">
-        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1600&q=80" alt="Pizza artesanal" />
+        <img src="https://res.cloudinary.com/dmuxgamms/image/upload/v1781791382/photo_2026-06-18_16-00-43_sr1hdo.jpg" alt="Pizza artesanal" style={{ transform: `translateY(${scrollProgress * 80}px)` }} />
       </div>
-      <div className="hero-overlay" />
-      <div className="hero-content">
+      <div className="hero-overlay" style={{ opacity: Math.max(0.4, 1 - scrollProgress) }} />
+      <div className="hero-content" style={{ transform: `translateY(${scrollProgress * -60}px) scale(${1 - scrollProgress * 0.08})`, opacity: 1 - scrollProgress }}>
         {visible && (
           <>
             <p className="hero-eyebrow fade-up" style={{animationDelay:"0.2s"}}>{RESTAURANT.city}</p>
