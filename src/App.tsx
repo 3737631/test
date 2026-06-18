@@ -10,7 +10,7 @@ const RESTAURANT = {
   address: "Calle Concordia, Local 5, 41920 San Juan de Aznalfarache, Sevilla",
   addressShort: "C. Concordia, Local 5",
   city: "San Juan de Aznalfarache, Sevilla",
-  hours: "Abierto en horario de tarde-noche",
+  hours: "L-D 13:00-16:00 · 20:00-00:00",
   location: "Junto al estanco",
   reviewsTotal: 200,
   reviewScore: 4.6,
@@ -34,7 +34,7 @@ const MENU_ITEMS: Record<string, { name: string; desc: string; price: string }[]
     { name: "Napolitana", desc: "Anchoas, alcaparras, aceitunas, orégano", price: "9,50" },
   ],
   especiales: [
-    { name: "Luigipizza", desc: "Nuestra especialidad de la casa con ingredient secretos", price: "12,00" },
+    { name: "Luigipizza", desc: "Nuestra especialidad de la casa con ingredientes secretos", price: "12,00" },
     { name: "Caprichosa", desc: "Jamón york, champiñones, alcachofa, huevo", price: "10,50" },
     { name: "Diavola", desc: "Salami picante, jalapeños, cebolla roja", price: "11,00" },
     { name: "Trufa y Brie", desc: "Crema de trufa, queso brie, rúcula, nueces", price: "12,50" },
@@ -61,11 +61,6 @@ const GALLERY_IMAGES = [
   { src: "https://res.cloudinary.com/dmuxgamms/image/upload/v1781783751/unnamed_b0jbej.webp", alt: "Fachada de Luigipizza" },
   { src: "https://res.cloudinary.com/dmuxgamms/image/upload/v1781783787/unnamed_1_mkvhfc.webp", alt: "Horno y preparación" },
   { src: "https://res.cloudinary.com/dmuxgamms/image/upload/v1781783802/unnamed_2_emmq6t.webp", alt: "Pizza artesanal" },
-  { src: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80", alt: "Pizza Margarita" },
-  { src: "https://images.unsplash.com/photo-1594007654729-407eedc4be65?w=800&q=80", alt: "Pizza recién horneada" },
-  { src: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80", alt: "Interior del local" },
-  { src: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&q=80", alt: "Pizza Cuatro Quesos" },
-  { src: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80", alt: "Equipo en cocina" },
 ]
 
 const REVIEWS = [
@@ -80,9 +75,9 @@ const REVIEWS = [
 const FEATURES = [
   { title: "Masa artesanal propia", desc: "Elaborada diariamente siguiendo procesos de fermentación que potencian el sabor y la textura." },
   { title: "Ingredientes de calidad", desc: "Utilizamos productos seleccionados para garantizar el mejor resultado en cada pizza." },
-  { title: "Excelente relación calidad-precio", desc: "Pizzas artesanales a precios accesibles." },
+  { title: "Excelente relación calidad-precio", desc: "Pizzas artesanales a precios accesibles para todos los bolsillos." },
   { title: "Valoraciones destacadas", desc: "Más de 200 reseñas con una valoración media cercana a 4,6/5." },
-  { title: "Pedidos para llevar", desc: "Pide por teléfono y recoge tu pizza recién hecha." },
+  { title: "Pedidos para llevar", desc: "Pide por teléfono y recoge tu pizza recién hecha en el momento." },
 ]
 
 function Navbar() {
@@ -128,7 +123,7 @@ function Navbar() {
           <button className="mobile-cat-title" onClick={() => scrollTo("nosotros")}>Nosotros</button>
           <button className="mobile-cat-title" onClick={() => scrollTo("reservas")}>Reservas</button>
           <button className="mobile-cat-title" onClick={() => scrollTo("contacto")}>Contacto</button>
-          <a href={`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`} className="mobile-cat-title mobile-call">📞 Reservar</a>
+          <a href={`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`} className="mobile-cat-title mobile-call">Reservar</a>
         </div>
       </div>
       {menuOpen && <div className="mobile-overlay" onClick={() => setMenuOpen(false)} />}
@@ -138,41 +133,25 @@ function Navbar() {
 
 function Hero() {
   const [visible, setVisible] = useState(false)
-  const ref = useRef<HTMLElement>(null)
-  const [scrollProgress, setScrollProgress] = useState(0)
-
-  useEffect(() => { setVisible(true) }, [])
 
   useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const raw = Math.min(1, Math.max(0, 1 - entry.intersectionRatio))
-        setScrollProgress(Math.max(0, (raw - 0.15) / 0.85))
-      },
-      { threshold: Array.from({ length: 21 }, (_, i) => i / 20) }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
+    setVisible(true)
   }, [])
 
   return (
-    <section className="hero" ref={ref} style={{ clipPath: `polygon(0 0, 100% 0, 100% ${100 - scrollProgress * 25}%, 0 ${100 - scrollProgress * 20}%)` }}>
+    <section className="hero">
       <div className="hero-bg">
-        <img src="https://res.cloudinary.com/dmuxgamms/image/upload/v1781791382/photo_2026-06-18_16-00-43_sr1hdo.jpg" alt="Pizza artesanal" style={{ transform: `translateY(${scrollProgress * 80}px)` }} />
+        <img src="https://res.cloudinary.com/dmuxgamms/image/upload/v1781792861/unnamed_3_l6wkaf.webp" alt="Pizza artesanal" />
       </div>
-      <div className="hero-overlay" style={{ opacity: Math.max(0.4, 1 - scrollProgress) }} />
-      <div className="hero-content" style={{ transform: `translateY(${scrollProgress * -60}px) scale(${1 - scrollProgress * 0.08})`, opacity: 1 - scrollProgress }}>
+      <div className="hero-overlay" />
+      <div className="hero-content">
         {visible && (
           <>
-            <p className="hero-eyebrow fade-up" style={{animationDelay:"0.2s"}}>{RESTAURANT.city}</p>
-            <h1 className="hero-title fade-up" style={{animationDelay:"0.4s"}}>
-              {RESTAURANT.name} <em>Pizza</em>
-            </h1>
-            <p className="hero-subtitle fade-up" style={{animationDelay:"0.6s"}}>{RESTAURANT.tagline}</p>
-            <div className="hero-actions fade-up" style={{animationDelay:"0.8s"}}>
-              <button className="btn-outline" onClick={() => document.getElementById("carta")?.scrollIntoView({ behavior: "smooth" })}>Ver Carta</button>
+            <p className="fade-up hero-eyebrow">{RESTAURANT.city}</p>
+            <h1 className="fade-up hero-title">{RESTAURANT.name} <em>Pizza</em></h1>
+            <p className="fade-up hero-subtitle">{RESTAURANT.tagline}</p>
+            <div className="fade-up hero-actions">
+              <button className="btn-outline" onClick={() => document.getElementById("carta")?.scrollIntoView({ behavior: "smooth" })}>Ver carta</button>
               <a href={`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`} className="btn-gold">Reservar mesa</a>
               <a href={`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`} className="btn-ghost">Llamar</a>
               <a href="https://maps.google.com/?q=Luigipizza+San+Juan+de+Aznalfarache" target="_blank" rel="noopener noreferrer" className="btn-ghost">Cómo llegar</a>
@@ -228,6 +207,7 @@ function Menu() {
   const [category, setCategory] = useState("clasicas")
   const ref = useRef<HTMLElement>(null)
   const [visible, setVisible] = useState(false)
+
   useEffect(() => {
     const el = ref.current
     if (!el) return
@@ -256,7 +236,7 @@ function Menu() {
         </div>
         <div className="menu-list" key={category}>
           {items.map((item, i) => (
-            <div className="menu-item" style={{animationDelay:`${i*0.1}s`}} key={item.name}>
+            <div className="menu-item" style={{ animationDelay: `${i * 0.1}s` }} key={item.name}>
               <div className="menu-item-header">
                 <span className="menu-item-name">{item.name}</span>
                 <span className="menu-item-dots"></span>
@@ -280,21 +260,18 @@ function Gallery() {
   }, [])
 
   useEffect(() => {
-    const currentRefs = refs.current
+    const current = refs.current
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const img = entry.target.querySelector(".gallery-img")
-          if (img) {
-            img.classList.toggle("visible", entry.isIntersecting)
-          }
+          entry.target.classList.toggle("visible", entry.isIntersecting)
         })
       },
       { threshold: 0.1 }
     )
-    currentRefs.forEach((ref) => { if (ref) observer.observe(ref) })
+    current.forEach((el) => { if (el) observer.observe(el) })
     return () => {
-      currentRefs.forEach((ref) => { if (ref) observer.unobserve(ref) })
+      current.forEach((el) => { if (el) observer.unobserve(el) })
       observer.disconnect()
     }
   }, [])
@@ -346,6 +323,7 @@ function Gallery() {
 function Reviews() {
   const ref = useRef<HTMLElement>(null)
   const [visible, setVisible] = useState(false)
+
   useEffect(() => {
     const el = ref.current
     if (!el) return
@@ -354,11 +332,13 @@ function Reviews() {
     return () => observer.disconnect()
   }, [])
 
+  const scoreStr = RESTAURANT.reviewScore.toFixed(1).replace(".", ",")
+
   return (
     <section className="section section-card" ref={ref}>
       <div className={`container ${visible ? "fade-in" : ""}`}>
         <p className="eyebrow">Opiniones</p>
-        <div className="reviews-badge">{RESTAURANT.reviewScore.toFixed(1).replace(".",",")} · Más de {RESTAURANT.reviewsTotal} reseñas</div>
+        <div className="reviews-badge">{scoreStr} · Más de {RESTAURANT.reviewsTotal} reseñas</div>
         <div className="reviews-grid">
           {REVIEWS.map((r, i) => (
             <div key={i} className="review-card">
@@ -388,16 +368,6 @@ function Reservations() {
   const [booked, setBooked] = useState<string[]>([])
   const [sending, setSending] = useState(false)
   const [error, setError] = useState("")
-  const ref = useRef<HTMLElement>(null)
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setVisible(true) }, { threshold: 0.1 })
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
 
   const today = new Date().toISOString().slice(0, 10)
   const now = new Date()
@@ -438,8 +408,8 @@ function Reservations() {
 
   if (done) {
     return (
-      <section id="reservas" className="section section-card" ref={ref}>
-        <div className={`container-narrow ${visible ? "fade-in" : ""}`}>
+      <section id="reservas" className="section section-card">
+        <div className="container-narrow">
           <div className="confirm-icon">✓</div>
           <h2 className="section-title">Reserva confirmada</h2>
           <div className="confirm-box">
@@ -459,8 +429,8 @@ function Reservations() {
   const allDisabled = !date || !time || !name || !phone || !persons || isBooked(time) || sending
 
   return (
-    <section id="reservas" className="section section-card" ref={ref}>
-      <div className={`container-narrow ${visible ? "fade-in" : ""}`}>
+    <section id="reservas" className="section section-card">
+      <div className="container-narrow">
         <p className="eyebrow">Reservas</p>
         <h2 className="section-title">Reserva tu mesa</h2>
         <form className="reservas-form" onSubmit={handleSubmit}>
@@ -527,6 +497,7 @@ function Reservations() {
 function Location() {
   const ref = useRef<HTMLElement>(null)
   const [visible, setVisible] = useState(false)
+
   useEffect(() => {
     const el = ref.current
     if (!el) return
@@ -589,10 +560,10 @@ function Footer() {
           </div>
           <div className="footer-col">
             <h4 className="footer-heading">Contacto</h4>
-            <p className="footer-phone" onClick={() => window.open(`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`)}>📞 {RESTAURANT.phone}</p>
+            <p className="footer-phone" onClick={() => window.open(`tel:+34${RESTAURANT.phone.replace(/\s/g,"")}`)}>{RESTAURANT.phone}</p>
             <div className="footer-social">
-              <a href="https://tiktok.com/@luigipizza" target="_blank" rel="noopener noreferrer">TikTok</a>
               <a href="https://instagram.com/luigipizza" target="_blank" rel="noopener noreferrer">Instagram</a>
+              <a href="https://tiktok.com/@luigipizza" target="_blank" rel="noopener noreferrer">TikTok</a>
             </div>
           </div>
         </div>
