@@ -147,8 +147,11 @@ function Hero() {
     const el = ref.current
     if (!el) return
     const observer = new IntersectionObserver(
-      ([entry]) => setScrollProgress(Math.min(1, Math.max(0, 1 - entry.intersectionRatio))),
-      { threshold: Array.from({ length: 20 }, (_, i) => i / 20) }
+      ([entry]) => {
+        const raw = Math.min(1, Math.max(0, 1 - entry.intersectionRatio))
+        setScrollProgress(Math.max(0, (raw - 0.15) / 0.85))
+      },
+      { threshold: Array.from({ length: 21 }, (_, i) => i / 20) }
     )
     observer.observe(el)
     return () => observer.disconnect()
